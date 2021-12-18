@@ -9,5 +9,4 @@ cabal.sandbox.config
 *.swp
 *~
 \#*
-qaws.cabal
 .devcontainer/build

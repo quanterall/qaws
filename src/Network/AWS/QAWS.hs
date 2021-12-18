@@ -29,13 +29,13 @@ loadAWSEnvironment environmentFile = do
         Right e -> pure $ Right e
 
 tryRunAWS ::
-  (MonadReader env m, AWS.MonadAWS m, AWS.AWSRequest a, AWS.HasEnv env, MonadUnliftIO m) =>
+  (MonadReader env m, AWS.AWSRequest a, AWS.HasEnv env, MonadUnliftIO m) =>
   a ->
   m (Either AWS.Error (AWS.Rs a))
 tryRunAWS = runAWS >>> try
 
 runAWS ::
-  (MonadReader env m, AWS.MonadAWS m, AWS.AWSRequest a, AWS.HasEnv env, MonadUnliftIO m) =>
+  (MonadReader env m, AWS.AWSRequest a, AWS.HasEnv env, MonadUnliftIO m) =>
   a ->
   m (AWS.Rs a)
 runAWS action = do
@@ -43,14 +43,14 @@ runAWS action = do
   AWS.runResourceT $ AWS.runAWS awsEnvironment $ AWS.send action
 
 tryRunAWS' ::
-  (AWS.MonadAWS m, AWS.AWSRequest a, MonadUnliftIO m) =>
+  (AWS.AWSRequest a, MonadUnliftIO m) =>
   AWS.Env ->
   a ->
   m (Either AWS.Error (AWS.Rs a))
 tryRunAWS' env = runAWS' env >>> try
 
 runAWS' ::
-  (AWS.MonadAWS m, AWS.AWSRequest a, MonadUnliftIO m) =>
+  (AWS.AWSRequest a, MonadUnliftIO m) =>
   AWS.Env ->
   a ->
   m (AWS.Rs a)

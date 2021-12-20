@@ -29,7 +29,7 @@ either swallowing them or getting them as runtime exceptions.
 A version of `runAWS` that instead takes `AWS.Env` as an argument, allowing more flexible use if
 needed.
 
-## ´tryRunAWS'´
+## `tryRunAWS'`
 
 A version of `runAWS'` that takes care to either return an `AWS.Error` or a succesful response.
 

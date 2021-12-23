@@ -1,5 +1,9 @@
+{-# LANGUAGE TemplateHaskell #-}
+
 module Network.AWS.QAWS where
 
+import Control.Lens.TH (makeLenses)
+import Data.Aeson (FromJSON, ToJSON)
 import qualified Network.AWS as AWS
 import qualified Network.AWS.Auth as AWS
 import RIO
@@ -7,8 +11,10 @@ import qualified RIO.Directory as Directory
 import qualified RIO.Text as Text
 import qualified System.Environment as Environment
 
-newtype EnvironmentFile = EnvironmentFile {unEnvironmentFile :: FilePath}
-  deriving (Eq, Show)
+newtype EnvironmentFile = EnvironmentFile {_unEnvironmentFile :: FilePath}
+  deriving (Eq, Show, Generic, FromJSON, ToJSON)
+
+makeLenses ''EnvironmentFile
 
 data LoadEnvironmentError
   = EnvironmentFileNotFound EnvironmentFile

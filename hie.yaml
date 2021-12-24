@@ -1,13 +1,13 @@
 cradle:
   stack:
-    - path: "./qaws/src"
-      component: "qaws:lib"
-
-    - path: "./qaws/test"
-      component: "qaws:test:qaws-test"
-
     - path: "./qaws-sqs/src"
       component: "qaws-sqs:lib"
 
     - path: "./qaws-sqs/test"
       component: "qaws-sqs:test:qaws-sqs-test"
+
+    - path: "./qaws/src"
+      component: "qaws:lib"
+
+    - path: "./qaws/test"
+      component: "qaws:test:qaws-test"

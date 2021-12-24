@@ -22,6 +22,7 @@ import Data.Aeson (FromJSON (..), ToJSON (..), eitherDecodeStrict, encode)
 import qualified Network.AWS as AWS
 import Network.AWS.QAWS
 import Network.AWS.QAWS.SQS.Types
+import Network.AWS.QAWS.Types
 import qualified Network.AWS.SQS as AWSSQS
 import RIO
 import qualified RIO.HashMap as HashMap
@@ -201,7 +202,7 @@ getQueueAttributes' awsEnv queueUrl = do
 createQueueAttributes :: QueueUrl -> AWSSQS.GetQueueAttributesResponse -> QueueAttributes
 createQueueAttributes queueUrl response =
   let m = response ^. AWSSQS.gqarsAttributes
-      queueAttributesArn = HashMap.lookup AWSSQS.QANQueueARN m
+      queueAttributesArn = ARN <$> HashMap.lookup AWSSQS.QANQueueARN m
       queueAttributesMessages =
         MessageCount <$> (HashMap.lookup AWSSQS.QANApproximateNumberOfMessages m >>= treadMaybe)
       queueAttributesDelayedMessages =

@@ -11,6 +11,7 @@ build-type:     Simple
 library
   exposed-modules:
       Network.AWS.QAWS
+      Network.AWS.QAWS.Types
   other-modules:
       Paths_qaws
   hs-source-dirs:

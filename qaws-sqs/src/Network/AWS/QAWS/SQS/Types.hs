@@ -5,6 +5,7 @@ module Network.AWS.QAWS.SQS.Types where
 import Control.Lens.TH (makeLenses)
 import Data.Aeson (FromJSON (..), ToJSON (..))
 import qualified Network.AWS as AWS
+import Network.AWS.QAWS.Types (ARN)
 import RIO
 
 newtype QueueUrl = QueueUrl {_unQueueUrl :: Text}
@@ -31,11 +32,6 @@ newtype MessageId = MessageId {_unMessageId :: Text}
   deriving (Eq, Show, Generic, FromJSON, ToJSON)
 
 makeLenses ''MessageId
-
-newtype ARN = ARN {_unARN :: Text}
-  deriving (Eq, Show, Generic, FromJSON, ToJSON)
-
-makeLenses ''ARN
 
 newtype MessageCount = MessageCount {_unMessageCount :: Int}
   deriving (Eq, Show, Generic, FromJSON, ToJSON)
@@ -74,7 +70,7 @@ data ReceiveMessageError
 instance Exception ReceiveMessageError
 
 data QueueAttributes = QueueAttributes
-  { queueAttributesArn :: !(Maybe Text),
+  { queueAttributesArn :: !(Maybe ARN),
     queueAttributesUrl :: !QueueUrl,
     queueAttributesMessages :: !(Maybe MessageCount),
     queueAttributesDelayedMessages :: !(Maybe DelayedMessageCount),

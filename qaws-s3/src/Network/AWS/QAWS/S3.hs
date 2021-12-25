@@ -5,10 +5,15 @@ module Network.AWS.QAWS.S3
     runWithFileStream',
     objectExists,
     objectExists',
+    putObject,
+    putObject',
+    putJSON,
+    putJSON',
   )
 where
 
 import Conduit (ConduitT, ResourceT, runConduitRes, (.|))
+import Data.Aeson (ToJSON (..), encode)
 import qualified Network.AWS as AWS
 import qualified Network.AWS.Data.Body as AWS
 import Network.AWS.QAWS
@@ -66,3 +71,44 @@ runWithFileStream' awsEnv bucket key downstream = do
       AWS.runAWS awsEnv $ do
         fileStream <- getFileStream bucket key
         liftIO $ runConduitRes $ fileStream .| downstream
+
+putObject ::
+  (MonadUnliftIO m, MonadReader env m, AWS.HasEnv env, AWS.ToBody a) =>
+  AWSS3.BucketName ->
+  AWSS3.ObjectKey ->
+  a ->
+  m (Either AWS.Error ())
+putObject bucket key a = do
+  awsEnv <- view AWS.environment
+  putObject' awsEnv bucket key a
+
+putObject' ::
+  (MonadUnliftIO m, AWS.ToBody a) =>
+  AWS.Env ->
+  AWSS3.BucketName ->
+  AWSS3.ObjectKey ->
+  a ->
+  m (Either AWS.Error ())
+putObject' awsEnv bucket key a = do
+  let command = AWSS3.putObject bucket key (AWS.toBody a)
+  void <$> tryRunAWS' awsEnv command
+
+putJSON ::
+  (MonadUnliftIO m, MonadReader env m, AWS.HasEnv env, ToJSON a) =>
+  AWSS3.BucketName ->
+  AWSS3.ObjectKey ->
+  a ->
+  m (Either AWS.Error ())
+putJSON bucket key a = do
+  awsEnv <- view AWS.environment
+  putJSON' awsEnv bucket key a
+
+putJSON' ::
+  (MonadUnliftIO m, ToJSON a) =>
+  AWS.Env ->
+  AWSS3.BucketName ->
+  AWSS3.ObjectKey ->
+  a ->
+  m (Either AWS.Error ())
+putJSON' awsEnv bucket key a = do
+  void <$> putObject' awsEnv bucket key (encode a)

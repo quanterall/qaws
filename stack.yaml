@@ -3,6 +3,7 @@ resolver: lts-18.14
 packages:
 - ./qaws
 - ./qaws-sqs
+- ./qaws-s3
 
 allow-different-user: true
 

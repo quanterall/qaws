@@ -6,6 +6,12 @@ cradle:
     - path: "./qaws-sqs/test"
       component: "qaws-sqs:test:qaws-sqs-test"
 
+    - path: "./qaws-s3/src"
+      component: "qaws-s3:lib"
+
+    - path: "./qaws-s3/test"
+      component: "qaws-s3:test:qaws-s3-test"
+
     - path: "./qaws/src"
       component: "qaws:lib"
 

@@ -3,14 +3,36 @@ module Network.AWS.QAWS.S3
   ( getFileStream,
     runWithFileStream,
     runWithFileStream',
+    objectExists,
+    objectExists',
   )
 where
 
 import Conduit (ConduitT, ResourceT, runConduitRes, (.|))
 import qualified Network.AWS as AWS
 import qualified Network.AWS.Data.Body as AWS
+import Network.AWS.QAWS
 import qualified Network.AWS.S3 as AWSS3
 import RIO
+
+objectExists ::
+  (MonadUnliftIO m, MonadReader env m, AWS.HasEnv env) =>
+  AWSS3.BucketName ->
+  AWSS3.ObjectKey ->
+  m (Either AWS.Error Bool)
+objectExists bucketName objectKey = do
+  awsEnv <- view AWS.environment
+  objectExists' awsEnv bucketName objectKey
+
+objectExists' ::
+  (MonadUnliftIO m) =>
+  AWS.Env ->
+  AWSS3.BucketName ->
+  AWSS3.ObjectKey ->
+  m (Either AWS.Error Bool)
+objectExists' awsEnv bucket key = do
+  let command = AWSS3.headObject bucket key
+  either Left (((^. AWSS3.horsResponseStatus) >>> (== 200)) >>> Right) <$> tryRunAWS' awsEnv command
 
 getFileStream ::
   (AWS.MonadAWS m) =>

@@ -13,12 +13,14 @@ module Network.AWS.QAWS.S3
 where
 
 import Conduit (ConduitT, ResourceT, runConduitRes, (.|))
+import Control.Lens ((?~))
 import Data.Aeson (ToJSON (..), encode)
 import qualified Network.AWS as AWS
 import qualified Network.AWS.Data.Body as AWS
 import Network.AWS.QAWS
 import qualified Network.AWS.S3 as AWSS3
 import RIO
+import qualified RIO.HashMap as HashMap
 
 objectExists ::
   (MonadUnliftIO m, MonadReader env m, AWS.HasEnv env) =>
@@ -111,4 +113,9 @@ putJSON' ::
   a ->
   m (Either AWS.Error ())
 putJSON' awsEnv bucket key a = do
-  void <$> putObject' awsEnv bucket key (encode a)
+  let command =
+        AWSS3.putObject bucket key (AWS.toBody (encode a))
+          & AWSS3.poContentType ?~ "application/json"
+          & AWSS3.poMetadata .~ HashMap.fromList [("Content-Type", "application/json")]
+  void <$> tryRunAWS' awsEnv command
+

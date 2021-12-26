@@ -13,6 +13,7 @@ dependencies:
 - aeson
 - conduit
 - safe-exceptions
+- data-default
 
 default-extensions:
 - ApplicativeDo

@@ -9,6 +9,8 @@ module Network.AWS.QAWS.S3
     putObject',
     putJSON,
     putJSON',
+    listObjects,
+    listObjects',
   )
 where
 
@@ -18,6 +20,7 @@ import Data.Aeson (ToJSON (..), encode)
 import qualified Network.AWS as AWS
 import qualified Network.AWS.Data.Body as AWS
 import Network.AWS.QAWS
+import Network.AWS.QAWS.S3.Types
 import qualified Network.AWS.S3 as AWSS3
 import RIO
 import qualified RIO.HashMap as HashMap
@@ -119,3 +122,35 @@ putJSON' awsEnv bucket key a = do
           & AWSS3.poMetadata .~ HashMap.fromList [("Content-Type", "application/json")]
   void <$> tryRunAWS' awsEnv command
 
+listObjects ::
+  (MonadUnliftIO m, MonadReader env m, AWS.HasEnv env) =>
+  AWSS3.BucketName ->
+  ListObjectOptions ->
+  m (Either AWS.Error ([AWSS3.Object], Maybe ContinuationToken))
+listObjects bucket listObjectOptions = do
+  awsEnv <- view AWS.environment
+  listObjects' awsEnv bucket listObjectOptions
+
+listObjects' ::
+  (MonadUnliftIO m) =>
+  AWS.Env ->
+  AWSS3.BucketName ->
+  ListObjectOptions ->
+  m (Either AWS.Error ([AWSS3.Object], Maybe ContinuationToken))
+listObjects' awsEnv bucket listOptions = do
+  let command =
+        AWSS3.listObjectsV2 bucket
+          & AWSS3.lovContinuationToken .~ maybeTokenText
+          & AWSS3.lovPrefix .~ maybeKeyPrefix
+          & AWSS3.lovMaxKeys .~ maybeMaxKeys
+          & AWSS3.lovStartAfter .~ maybeStartAfter
+      maybeTokenText = _unContinuationToken <$> listOptions ^. looContinuationToken
+      maybeKeyPrefix = _unKeyPrefix <$> listOptions ^. looKeyPrefix
+      maybeMaxKeys = _unMaxKeys <$> listOptions ^. looMaxKeys
+      maybeStartAfter = _unStartAfter <$> listOptions ^. looStartAfter
+  either Left (extractValues >>> Right) <$> tryRunAWS' awsEnv command
+  where
+    extractValues r = do
+      let objects = r ^. AWSS3.lovrsContents
+          continuationToken = ContinuationToken <$> r ^. AWSS3.lovrsContinuationToken
+      (objects, continuationToken)

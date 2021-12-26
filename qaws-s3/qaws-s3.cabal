@@ -11,6 +11,7 @@ build-type:     Simple
 library
   exposed-modules:
       Network.AWS.QAWS.S3
+      Network.AWS.QAWS.S3.Types
   other-modules:
       Paths_qaws_s3
   hs-source-dirs:
@@ -67,6 +68,7 @@ library
     , amazonka-s3
     , base >=4.9.1.0 && <5
     , conduit
+    , data-default
     , lens
     , qaws
     , rio
@@ -132,6 +134,7 @@ test-suite qaws-s3-test
     , amazonka-s3
     , base >=4.9.1.0 && <5
     , conduit
+    , data-default
     , hspec >=2.0.0
     , lens
     , qaws

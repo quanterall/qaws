@@ -2,7 +2,7 @@ module Network.AWS.QAWS where
 
 import qualified Network.AWS as AWS
 import qualified Network.AWS.Auth as AWS
-import Qtility.Environment (loadEnvFile)
+import Qtility.Environment (loadDotEnvFile)
 import Qtility.Environment.Types
 import RIO
 
@@ -15,7 +15,7 @@ instance Exception LoadEnvironmentError
 
 loadAWSEnvironment :: EnvironmentFile -> IO (Either LoadEnvironmentError AWS.Env)
 loadAWSEnvironment environmentFile = do
-  loadEnvResult <- mapLeft LoadEnvironmentNotFoundError <$> loadEnvFile environmentFile
+  loadEnvResult <- mapLeft LoadEnvironmentNotFoundError <$> loadDotEnvFile environmentFile
   case loadEnvResult of
     Left e -> pure $ Left e
     Right () -> do

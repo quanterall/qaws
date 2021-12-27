@@ -19,31 +19,31 @@ packages:
   original:
     hackage: unliftio-core-0.1.2.0@sha256:b0a7652ffce2284a6cebe05c99eb60573a8fb6631163f34b0b30a80b4a78cb23,1081
 - completed:
-    size: 4693
+    size: 5019
     subdir: qtility-data
-    url: https://github.com/quanterall/qtility/archive/84290f3dd5d9fb8629a3c60888a590eba81dca1c.tar.gz
+    url: https://github.com/quanterall/qtility/archive/257ba00f1a23709967f009e34587a635d1a3ae8e.tar.gz
     name: qtility-data
     version: 0.0.0
-    sha256: 46cc6f47439e9aeaa50e19053ee886ed78ea978105aab56869aa1ab196d93bc1
+    sha256: c0ef08f8933e24ea68b02750465af2ca5a834e34a2ac4b45ed0b0ae1d1a8f1cd
     pantry-tree:
       size: 323
       sha256: 6249a4e33329a26674d9895fd5c876fd24f8e3039717441638f0965deddaa7bf
   original:
     subdir: qtility-data
-    url: https://github.com/quanterall/qtility/archive/84290f3dd5d9fb8629a3c60888a590eba81dca1c.tar.gz
+    url: https://github.com/quanterall/qtility/archive/257ba00f1a23709967f009e34587a635d1a3ae8e.tar.gz
 - completed:
-    size: 4693
+    size: 5019
     subdir: qtility-environment
-    url: https://github.com/quanterall/qtility/archive/84290f3dd5d9fb8629a3c60888a590eba81dca1c.tar.gz
+    url: https://github.com/quanterall/qtility/archive/257ba00f1a23709967f009e34587a635d1a3ae8e.tar.gz
     name: qtility-environment
     version: 0.0.0
-    sha256: 46cc6f47439e9aeaa50e19053ee886ed78ea978105aab56869aa1ab196d93bc1
+    sha256: c0ef08f8933e24ea68b02750465af2ca5a834e34a2ac4b45ed0b0ae1d1a8f1cd
     pantry-tree:
-      size: 310
-      sha256: aabe6b0f465b8dd0623fc67c372fd2216ebecd4d233f7a5b9b683f772541c170
+      size: 311
+      sha256: 75284b2b958c0ee41e428efd8f294ce7c2de8c147f7a2aae3e3de9e7c0462b04
   original:
     subdir: qtility-environment
-    url: https://github.com/quanterall/qtility/archive/84290f3dd5d9fb8629a3c60888a590eba81dca1c.tar.gz
+    url: https://github.com/quanterall/qtility/archive/257ba00f1a23709967f009e34587a635d1a3ae8e.tar.gz
 snapshots:
 - completed:
     size: 586069

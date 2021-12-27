@@ -24,6 +24,7 @@ import Network.AWS.QAWS
 import Network.AWS.QAWS.SQS.Types
 import Network.AWS.QAWS.Types
 import qualified Network.AWS.SQS as AWSSQS
+import Qtility.Data (note, tReadMaybe)
 import RIO
 import qualified RIO.HashMap as HashMap
 import qualified RIO.Text as Text
@@ -204,13 +205,13 @@ createQueueAttributes queueUrl response =
   let m = response ^. AWSSQS.gqarsAttributes
       queueAttributesArn = ARN <$> HashMap.lookup AWSSQS.QANQueueARN m
       queueAttributesMessages =
-        MessageCount <$> (HashMap.lookup AWSSQS.QANApproximateNumberOfMessages m >>= treadMaybe)
+        MessageCount <$> (HashMap.lookup AWSSQS.QANApproximateNumberOfMessages m >>= tReadMaybe)
       queueAttributesDelayedMessages =
         DelayedMessageCount
-          <$> (HashMap.lookup AWSSQS.QANApproximateNumberOfMessagesDelayed m >>= treadMaybe)
+          <$> (HashMap.lookup AWSSQS.QANApproximateNumberOfMessagesDelayed m >>= tReadMaybe)
       queueAttributesNotVisibleMessages =
         NotVisibleCount
-          <$> (HashMap.lookup AWSSQS.QANApproximateNumberOfMessagesNotVisible m >>= treadMaybe)
+          <$> (HashMap.lookup AWSSQS.QANApproximateNumberOfMessagesNotVisible m >>= tReadMaybe)
    in QueueAttributes
         { queueAttributesArn,
           queueAttributesUrl = queueUrl,
@@ -238,9 +239,3 @@ purgeQueue' awsEnv (QueueUrl queueUrl) = do
   case maybeResponse of
     Right _ -> pure $ Right ()
     Left e -> pure $ Left e
-
-note :: e -> Maybe a -> Either e a
-note e = maybe (Left e) Right
-
-treadMaybe :: (Read a) => Text -> Maybe a
-treadMaybe = Text.unpack >>> readMaybe

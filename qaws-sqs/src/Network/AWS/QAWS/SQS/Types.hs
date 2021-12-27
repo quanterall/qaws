@@ -6,12 +6,16 @@ import Control.Lens.TH (makeLenses)
 import Data.Aeson (FromJSON (..), ToJSON (..))
 import qualified Network.AWS as AWS
 import Network.AWS.QAWS.Types (ARN)
+import Qtility.Environment (FromEnvironmentValue (..))
 import RIO
 
 newtype QueueUrl = QueueUrl {_unQueueUrl :: Text}
   deriving (Eq, Show, Generic, FromJSON, ToJSON)
 
 makeLenses ''QueueUrl
+
+instance FromEnvironmentValue QueueUrl where
+  fromEnvironmentValue v = QueueUrl <$> fromEnvironmentValue v
 
 newtype WaitTime = WaitTime {_unWaitTime :: Int}
   deriving (Eq, Show, Generic, FromJSON, ToJSON)

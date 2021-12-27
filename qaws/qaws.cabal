@@ -68,6 +68,7 @@ library
     , base >=4.9.1.0 && <5
     , lens
     , mtl
+    , qtility-environment
     , rio
     , unliftio
   default-language: Haskell2010
@@ -133,6 +134,7 @@ test-suite qaws-test
     , lens
     , mtl
     , qaws
+    , qtility-environment
     , rio
     , unliftio
   default-language: Haskell2010

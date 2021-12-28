@@ -1,5 +1,8 @@
 # `qaws` monorepo
 
+**NOTE: This repository is archived in favor of [qtility](https://github.com/quanterall/qtility)
+and all packages were folded into that repository.**
+
 This repository is a one-stop shop for the `qaws` base library designed to help with basic usage of
 `amazonka`, as well as the sub-libraries for dealing with different `amazonka-*` libraries like
 `amazonka-sqs`, etc.
